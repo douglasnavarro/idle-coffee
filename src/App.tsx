@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Inventory, { Item } from "./components/Inventory";
 import Market from "./components/Market";
@@ -13,6 +13,7 @@ const useBalance = (initialBalance: number) => {
       }
       setBalance(balance - amount);
     },
+    addBalance: (amount: number) => setBalance(balance + amount),
   };
 };
 
@@ -21,9 +22,21 @@ const useInventory = () => {
   return { items, addItem: (item: Item) => setItems([...items, item]) };
 };
 
+const useGameLoop = (items: Item[], addBalance: (amount: number) => void) => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const rate = items.reduce((acc, item) => acc + item.rate, 0);
+      addBalance(rate);
+    }, 1000);
+    return () => clearInterval(interval);
+  });
+};
+
 function App() {
-  const { balance, deductFromBalance } = useBalance(10);
+  const { balance, deductFromBalance, addBalance } = useBalance(30);
   const { items, addItem } = useInventory();
+  useGameLoop(items, addBalance);
+
   return (
     <div className="App">
       <header className="App-header">

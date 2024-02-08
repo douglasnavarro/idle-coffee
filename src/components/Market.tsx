@@ -25,7 +25,7 @@ const Market: React.FC<MarketProps> = ({ deductBalance, addItem }) => {
     <div>
       <h2>Galactic Market</h2>
       <button onClick={tradeCoffeeSprout}>Buy coffee plant [10 denarii]</button>
-      {tradeError && <p style={{ color: "red" }}>Can't trade: {tradeError}</p>}
+      {tradeError && <p className="error">Can't trade: {tradeError}</p>}
     </div>
   );
 };
