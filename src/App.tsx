@@ -22,6 +22,7 @@ const useInventory = () => {
   return { items, addItem: (item: Item) => setItems([...items, item]) };
 };
 
+/* Continuously updates the balance based on the items' rates */
 const useGameLoop = (items: Item[], addBalance: (amount: number) => void) => {
   useEffect(() => {
     const interval = setInterval(() => {
