@@ -5,7 +5,15 @@ import Market from "./components/Market";
 
 const useBalance = (initialBalance: number) => {
   const [balance, setBalance] = useState<number>(initialBalance);
-  return { balance, setBalance };
+  return {
+    balance,
+    deductFromBalance: (amount: number) => {
+      if (balance - amount < 0) {
+        throw new Error("Insufficient funds");
+      }
+      setBalance(balance - amount);
+    },
+  };
 };
 
 const useInventory = () => {
@@ -14,14 +22,14 @@ const useInventory = () => {
 };
 
 function App() {
-  const { balance, setBalance } = useBalance(100);
+  const { balance, deductFromBalance } = useBalance(10);
   const { items, addItem } = useInventory();
   return (
     <div className="App">
       <header className="App-header">
         <body>
-          <p>balance: {balance}</p>
-          <Market setBalance={setBalance} addItem={addItem} />
+          <p>Balance: {balance}</p>
+          <Market deductBalance={deductFromBalance} addItem={addItem} />
           <Inventory items={items} />
         </body>
       </header>
