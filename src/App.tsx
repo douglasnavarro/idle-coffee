@@ -23,7 +23,7 @@ const useInventory = () => {
 };
 
 /* Continuously updates the balance based on the items' rates */
-const useGameLoop = (items: Item[], addBalance: (amount: number) => void) => {
+const useItemsRate = (items: Item[], addBalance: (amount: number) => void) => {
   useEffect(() => {
     const interval = setInterval(() => {
       const rate = items.reduce((acc, item) => acc + item.rate, 0);
@@ -36,7 +36,7 @@ const useGameLoop = (items: Item[], addBalance: (amount: number) => void) => {
 function App() {
   const { balance, deductFromBalance, addBalance } = useBalance(30);
   const { items, addItem } = useInventory();
-  useGameLoop(items, addBalance);
+  useItemsRate(items, addBalance);
 
   return (
     <div className="App">
