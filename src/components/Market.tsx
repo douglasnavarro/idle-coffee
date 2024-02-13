@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Item } from "./Inventory";
 
 interface MarketProps {
-  deductBalance: (amount: number) => any;
+  deductFromSilo: (amount: number) => any;
   addItem: (item: Item) => void;
 }
 
@@ -16,11 +16,11 @@ const deals: Deal[] = [
   { price: 100, item: { id: 2, name: "Coffee Tree", rate: 10 } },
 ];
 
-const Market: React.FC<MarketProps> = ({ deductBalance, addItem }) => {
+const Production: React.FC<MarketProps> = ({ deductFromSilo, addItem }) => {
   const [tradeError, setTradeError] = useState<string | null>(null);
   const runDeal = (deal: Deal) => {
     try {
-      deductBalance(deal.price);
+      deductFromSilo(deal.price);
       addItem(deal.item);
       setTradeError(null);
     } catch (error) {
@@ -30,12 +30,12 @@ const Market: React.FC<MarketProps> = ({ deductBalance, addItem }) => {
 
   return (
     <div>
-      <h2>Galactic Market</h2>
+      <h2>Production</h2>
       <ul>
         {deals.map((deal) => (
           <li key={deal.item.id}>
             {deal.item.name} - {deal.price} credits
-            <button onClick={() => runDeal(deal)}>Trade</button>
+            <button onClick={() => runDeal(deal)}>Buy</button>
           </li>
         ))}
       </ul>
@@ -44,4 +44,4 @@ const Market: React.FC<MarketProps> = ({ deductBalance, addItem }) => {
   );
 };
 
-export default Market;
+export default Production;

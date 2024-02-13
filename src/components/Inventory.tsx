@@ -39,10 +39,15 @@ const itemDescription = (item: ItemWithCount): string => {
   return `${item.name} - Rate: ${item.rate} x${item.count}`;
 };
 
+const totalRate = (items: Item[]): number => {
+  return items.reduce((acc, item) => acc + item.rate, 0)
+}
+
 const Inventory: React.FC<InventoryProps> = ({ items }) => {
   return (
     <div>
-      <h1>Inventory</h1>
+      <h2>Inventory</h2>
+      <p>Producing <b>{totalRate(items)}</b> kilograms per cycle</p>
       <ul>
         {itemsWithCount(items)
           .map(itemDescription)

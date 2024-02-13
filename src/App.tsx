@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Inventory, { Item } from "./components/Inventory";
-import Market from "./components/Market";
+import Production from "./components/Market";
+import { Business } from "./components/Business";
 
-const useBalance = (initialBalance: number) => {
-  const [balance, setBalance] = useState<number>(initialBalance);
+const useSilo = (initialAmount: number) => {
+  const [currentAmount, setAmount] = useState<number>(initialAmount);
   return {
-    balance,
-    deductFromBalance: (amount: number) => {
-      if (balance - amount < 0) {
+    coffeeAmount: currentAmount,
+    deductFromSilo: (amount: number) => {
+      if (currentAmount - amount < 0) {
         throw new Error("Insufficient funds");
       }
-      setBalance(balance - amount);
+      setAmount(currentAmount - amount);
     },
-    addBalance: (amount: number) => setBalance(balance + amount),
+    addToSilo: (amount: number) => setAmount(currentAmount + amount),
   };
 };
 
@@ -34,16 +35,17 @@ const useItemsRate = (items: Item[], addBalance: (amount: number) => void) => {
 };
 
 function App() {
-  const { balance, deductFromBalance, addBalance } = useBalance(30);
+  const { coffeeAmount, deductFromSilo, addToSilo } = useSilo(30);
   const { items, addItem } = useInventory();
-  useItemsRate(items, addBalance);
+  useItemsRate(items, addToSilo);
 
   return (
     <div className="App">
       <header className="App-header">
         <body>
-          <p>Balance: {balance}</p>
-          <Market deductBalance={deductFromBalance} addItem={addItem} />
+          <p>Unsold: {coffeeAmount} kilograms</p>
+          <Business/>
+          <Production deductFromSilo={deductFromSilo} addItem={addItem} />
           <Inventory items={items} />
         </body>
       </header>
