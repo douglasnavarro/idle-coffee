@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Item } from "./Inventory";
 
-interface MarketProps {
+interface ProductionProps {
   deductFromSilo: (amount: number) => any;
   addItem: (item: Item) => void;
 }
@@ -16,7 +16,7 @@ const deals: Deal[] = [
   { price: 100, item: { id: 2, name: "Coffee Tree", rate: 10 } },
 ];
 
-const Production: React.FC<MarketProps> = ({ deductFromSilo, addItem }) => {
+const Production: React.FC<ProductionProps> = ({ deductFromSilo, addItem }) => {
   const [tradeError, setTradeError] = useState<string | null>(null);
   const runDeal = (deal: Deal) => {
     try {
